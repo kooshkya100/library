@@ -1,0 +1,135 @@
+/* imports */
+@import url('https://fonts.googleapis.com/css2?family=Rochester&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=IM+Fell+DW+Pica&family=Rochester&display=swap');
+
+/* root */
+:root {
+    --header-bgcolor: rgb(0, 0, 99);
+    --header-color: white;
+}
+
+/* General */
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+h1 {
+    font-family: 'IM Fell DW Pica', serif;
+    font-size: 3rem;
+}
+h2 {
+    font-family: 'IM Fell DW Pica', serif;
+    font-size: 2.5rem;
+    font-weight: bold;
+}
+h3 {
+    font-family: 'IM Fell DW Pica', serif;
+    font-size: 1.5rem;
+}
+strong {
+    font-size: 5rem;
+}
+
+
+/* Header */
+header {
+    background-color: var(--header-bgcolor);
+    color: var(--header-color);
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+
+    margin: 0 auto;
+    padding: 1.5rem 1rem;
+    max-width: 1500px;
+}
+
+.day-night-mode-btn {
+    font-size: 3rem;
+}
+
+/* Books Section */
+.books-list {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    justify-items: center;
+    gap: 1rem;
+    padding: 1rem;
+}
+.book {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    padding: 1rem;
+    border-radius: 1rem;
+    color: white;
+    text-align: center;
+    width: 100%;
+    max-width: 350px;
+    height: 100%;
+}
+.book.unread {
+    background-color: rgb(61, 61, 61);
+}
+.book.read {
+    background-color: rgb(0, 100, 25);
+}
+.book.add-book {
+    background-color: black;
+}
+
+.book h2, .book h3, .book .options {
+    margin: 0.8rem 0;
+}
+
+.book .options {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1rem;
+
+    font-size: 1.5rem;
+}
+.book .options .button {
+    border-radius: 10rem;
+    width: 80%;
+    margin: 0 auto;
+    padding: 0.8rem 0;
+}
+.options .delete-but.button {
+    background-color: red;
+}
+.options .edit-but.button.read {
+    background-color: rgb(0, 0, 255);
+}
+.options .edit-but.button.unread {
+    background-color: rgb(197, 3, 3);
+}
+
+
+/* Utilities */
+.display-none {
+    display: none;
+}
+.button {
+    cursor: pointer;
+    font-family: 'IM Fell DW Pica', serif;
+}
+
+
+@media (max-width: 1200px) {
+    .books-list {
+        grid-template-columns: 1fr 1fr;
+        max-width: 800px;
+    }
+}
+@media (max-width: 800px) {
+    .books-list {
+        grid-template-columns: 1fr;
+        width: 100%;
+    }
+}
