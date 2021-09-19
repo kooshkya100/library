@@ -1,11 +1,18 @@
 /* imports */
-@import url('https://fonts.googleapis.com/css2?family=Rochester&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=IM+Fell+DW+Pica&family=Rochester&display=swap');
 
 /* root */
 :root {
     --header-bgcolor: rgb(0, 0, 99);
-    --header-color: white;
+    --forecolor: white;
+    --unread-book-bg: rgb(61, 61, 61);
+    --read-book-bg: rgb(0, 100, 25);
+    --add-book-button-color: black;
+    --delete-button-bg: red;
+    --edit-button-read-bg: rgb(0, 0, 255);
+    --edit-button-unread-bg: rgb(197, 3, 3);
+    --popup-form-bg: white;
+    --popup-form-color: black;
 }
 
 /* General */
@@ -15,15 +22,18 @@
 h1 {
     font-family: 'IM Fell DW Pica', serif;
     font-size: 3rem;
+    text-align: center;
 }
 h2 {
     font-family: 'IM Fell DW Pica', serif;
     font-size: 2.5rem;
     font-weight: bold;
+    text-align: center;
 }
 h3 {
     font-family: 'IM Fell DW Pica', serif;
     font-size: 1.5rem;
+    text-align: center;
 }
 strong {
     font-size: 5rem;
@@ -33,7 +43,7 @@ strong {
 /* Header */
 header {
     background-color: var(--header-bgcolor);
-    color: var(--header-color);
+    color: var(--forecolor);
 }
 
 .header-content {
@@ -68,7 +78,7 @@ header {
 
     padding: 1rem;
     border-radius: 1rem;
-    color: white;
+    color: var(--forecolor);
     text-align: center;
     width: 100%;
     max-width: 350px;
@@ -76,13 +86,13 @@ header {
     min-height: 350px;
 }
 .book.unread-book {
-    background-color: rgb(61, 61, 61);
+    background-color: var(--unread-book-bg);
 }
 .book.read-book {
-    background-color: rgb(0, 100, 25);
+    background-color: var(--read-book-bg);
 }
 .book.add-book {
-    background-color: black;
+    background-color: var(--add-book-button-color);
 }
 
 .book h2, .book h3, .book .options {
@@ -104,14 +114,88 @@ header {
     padding: 0.8rem 0;
 }
 .options .delete-but.button {
-    background-color: red;
+    background-color: var(--delete-button-bg);
 }
 .options .edit-but.button.read {
-    background-color: rgb(0, 0, 255);
+    background-color: var(--edit-button-read-bg);
 }
 .options .edit-but.button.unread {
-    background-color: rgb(197, 3, 3);
+    background-color: var(--edit-button-unread-bg);
 }
+
+/* Popup Form */
+.popup-form {
+    width: 50%;
+    min-width: 310px;
+    max-width: 800px;
+    height: 90%;
+    max-height: 650px;
+    padding: 3%;
+
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+
+    background-color: var(--popup-form-bg);
+    color: var(--popup-form-color);
+    border-radius: 1rem;
+
+    font-family: 'IM Fell DW Pica', serif;
+    font-size: 1.5rem;
+}
+.popup-form  form {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 85%;
+    /* gap: 1rem; */
+    margin-top: 4%;
+}
+.popup-form  form  input,
+.popup-form form label,
+.popup-form form select {
+    display: block;
+    width: 100%;
+    max-width: 700px;
+    margin: 0.5rem auto;
+    font: inherit;
+}
+.popup-form  form  input[type='text'],
+.popup-form  form  input[type='number'] {
+    border: none;
+    border-bottom: 1px solid rgba(66, 66, 66, 0.473);
+}
+.popup-form  form  input[type='text']:focus,
+.popup-form  form  input[type='number']:focus {
+    outline: none;
+    border-bottom-color: black;
+}
+.popup-form  form  select:focus {
+    outline: none;
+}
+
+.popup-form form input[type='submit'] {
+    background-color: rgb(0, 102, 0);
+    color: white;
+    border: none;
+    padding: 1rem;
+    margin: 3% auto 0;
+    cursor: pointer;
+}
+
+
+
+.gray-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-color: #8888888a;
+}
+
 
 
 /* Utilities */
@@ -122,6 +206,7 @@ header {
     cursor: pointer;
     font-family: 'IM Fell DW Pica', serif;
 }
+
 
 
 @media (max-width: 1200px) {
