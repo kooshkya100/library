@@ -3,21 +3,43 @@
 
 /* root */
 :root {
-    --header-bgcolor: rgb(0, 0, 99);
-    --forecolor: white;
-    --unread-book-bg: rgb(61, 61, 61);
-    --read-book-bg: rgb(0, 100, 25);
-    --add-book-button-color: black;
-    --delete-button-bg: red;
-    --edit-button-read-bg: rgb(0, 0, 255);
-    --edit-button-unread-bg: rgb(197, 3, 3);
+    /* Day Mode */
+    /* --bgcolor: white;
+    --header-bgcolor: rgb(0 198 189);
+    --forecolor: #000722;
+    --unread-book-bg: rgb(189 189 189);
+    --read-book-bg: rgb(0 198 189);
+    --add-book-button-color: rgb(0, 94, 253);
+    --delete-button-bg: #000722;
+    --delete-button-color: white;
+    --edit-button-read-bg: rgb(255 255 255);
+    --edit-button-unread-bg: #000722;
+    --edit-button-unread-color: white;
     --popup-form-bg: white;
-    --popup-form-color: black;
+    --popup-form-color: black; */
+
+    /* Night Mode */
+    /* --bgcolor: rgb(27, 0, 39);
+    --header-bgcolor: rgb(29 0 136);
+    --forecolor: white;
+    --unread-book-bg: rgb(133 0 0);
+    --read-book-bg: rgb(2 115 0);
+    --add-book-button-color: rgb(0, 94, 253);
+    --delete-button-bg: #ffffff;
+    --delete-button-color: black;
+    --edit-button-read-bg: rgb(0 15 255);
+    --edit-button-unread-bg: rgb(27, 0, 39);
+    --edit-button-unread-color: white;
+    --popup-form-bg: rgb(27, 0, 39);
+    --popup-form-color: white; */
 }
 
 /* General */
 *, *::before, *::after {
     box-sizing: border-box;
+}
+body {
+    background-color: var(--bgcolor);
 }
 h1 {
     font-family: 'IM Fell DW Pica', serif;
@@ -44,6 +66,7 @@ strong {
 header {
     background-color: var(--header-bgcolor);
     color: var(--forecolor);
+    margin-bottom: 3rem;
 }
 
 .header-content {
@@ -55,7 +78,7 @@ header {
     max-width: 1500px;
 }
 
-.day-night-mode-btn {
+.day-night-mode-switch {
     font-size: 3rem;
 }
 
@@ -72,9 +95,10 @@ header {
     padding: 1rem;
 }
 .book {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+    display: grid;
+    grid-template-rows: 2.5fr repeat(2, 1fr) 3fr;
+    align-items: center;
+
 
     padding: 1rem;
     border-radius: 1rem;
@@ -95,15 +119,11 @@ header {
     background-color: var(--add-book-button-color);
 }
 
-.book h2, .book h3, .book .options {
-    margin: 0.8rem 0;
-}
-
 .book .options {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    gap: 1rem;
+    gap: 0.5rem;
 
     font-size: 1.5rem;
 }
@@ -115,12 +135,18 @@ header {
 }
 .options .delete-but.button {
     background-color: var(--delete-button-bg);
+    color: var(--delete-button-color);
 }
 .options .edit-but.button.read {
     background-color: var(--edit-button-read-bg);
 }
 .options .edit-but.button.unread {
     background-color: var(--edit-button-unread-bg);
+    color: var(--edit-button-unread-color);
+}
+
+.book.add-book {
+    grid-template-rows: 1fr;
 }
 
 /* Popup Form */
@@ -161,6 +187,8 @@ header {
     max-width: 700px;
     margin: 0.5rem auto;
     font: inherit;
+    background-color: inherit;
+    color: inherit;
 }
 .popup-form  form  input[type='text'],
 .popup-form  form  input[type='number'] {
@@ -170,7 +198,7 @@ header {
 .popup-form  form  input[type='text']:focus,
 .popup-form  form  input[type='number']:focus {
     outline: none;
-    border-bottom-color: black;
+    border-bottom-color: var(--popup-form-color);
 }
 .popup-form  form  select:focus {
     outline: none;

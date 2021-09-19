@@ -33,6 +33,9 @@ function initialize() {
     myLibrary.forEach((book) => {
         book.addCard();
     });
+
+    switchDayNightMode();
+    switchDayNightMode();
 }
 
 function addBook() {
@@ -85,26 +88,73 @@ function deleteBook() {
     bookCard.remove();
 }
 
+function switchDayNightMode() {
+    document.documentElement.style = "";
+    if (dayNightModeSwitch.getAttribute("data-mode") === "day") {
+        for (key in nightModePalatte) {
+            document.documentElement.style.setProperty(key, nightModePalatte[key]);
+            dayNightModeSwitch.setAttribute("data-mode", "night");
+        }  
+    }
+    else if (dayNightModeSwitch.getAttribute("data-mode") === "night") {
+        for (key in dayModePalatte) {
+            document.documentElement.style.setProperty(key, dayModePalatte[key]);
+            dayNightModeSwitch.setAttribute("data-mode", "day");
+        }
+    }
+
+    dayNightModeSwitch.querySelector("[data-value='day']").classList.toggle("display-none");
+    dayNightModeSwitch.querySelector("[data-value='night']").classList.toggle("display-none");
+}
+
+
+const dayModePalatte = {
+    "--bgcolor": "white",
+    "--header-bgcolor": "rgb(0 198 189)",
+    "--forecolor": "#000722",
+    "--unread-book-bg": "rgb(189 189 189)",
+    "--read-book-bg": "rgb(0 198 189)",
+    "--add-book-button-color": "rgb(0, 94, 253)",
+    "--delete-button-bg": "#000722",
+    "--delete-button-color": "white",
+    "--edit-button-read-bg": "rgb(255 255 255)",
+    "--edit-button-unread-bg": "#000722",
+    "--edit-button-unread-color": "white",
+    "--popup-form-bg": "white",
+    "--popup-form-color": "black",
+};
+const nightModePalatte = {
+    "--bgcolor": "rgb(27, 0, 39)",
+    "--header-bgcolor": "rgb(29 0 136)",
+    "--forecolor": "white",
+    "--unread-book-bg": "rgb(133 0 0)",
+    "--read-book-bg": "rgb(2 115 0)",
+    "--add-book-button-color": "rgb(0, 94, 253)",
+    "--delete-button-bg": "#ffffff",
+    "--delete-button-color": "black",
+    "--edit-button-read-bg": "rgb(0 15 255)",
+    "--edit-button-unread-bg": "rgb(27, 0, 39)",
+    "--edit-button-unread-color": "white",
+    "--popup-form-bg": "rgb(27, 0, 39)",
+    "--popup-form-color": "white",
+
+};
+const dayNightModeSwitch = document.querySelector(".day-night-mode-switch");
+dayNightModeSwitch.addEventListener("click", switchDayNightMode);
+
+
 const myLibrary = [
     new Book("Pride and Prejudice", "Jane Austen", 500, true),
     new Book("The Great Gatsby", "F. Scott Fitzgerald", 200, false),
     new Book("Wuthering Heights", "Charlotte Bronte", 350, false),
     new Book("The Killing of a Mockingbird", "Neil Harper Lee", 350, true),
+    new Book("Emma", "Jane Austen", 600, false),
 ];
 const booksList = document.querySelector("div.books-list");
 
 initialize();
 
 /* Post-initialization */
-// const readStatusButtons = document.querySelectorAll(".edit-but");
-// readStatusButtons.forEach((button) => {
-//     button.addEventListener("click", toggleReadStatus);
-// });
-
-// const deleteButtons = document.querySelectorAll(".delete-but");
-// deleteButtons.forEach((button) => {
-//     button.addEventListener("click", deleteBook);
-// });
 
 const grayBackground = document.querySelector(".gray-background");
 grayBackground.addEventListener("click", toggleAddBookForm);
@@ -115,6 +165,8 @@ addBookFormElement.addEventListener("submit", addBook);
 
 const addBookButton = document.querySelector(".add-book");
 addBookButton.addEventListener("click", toggleAddBookForm);
+
+
 
 
 
