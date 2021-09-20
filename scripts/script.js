@@ -2,19 +2,19 @@ function Book(title, author, pageCount, read) {
     this.title = title;
     this.author = author;
     this.pageCount = pageCount;
-    this.read = read;
+    this.read = read;   // TAKES STRING VALUE: EITHER "read" OR "unread"
 }
 Book.prototype.addCard = function () {
     const card = document.createElement("div");
     card.classList.add("book");
-    card.classList.add(this.read ? 'read-book' : 'unread-book');
+    card.classList.add((this.read === "read") ? 'read-book' : 'unread-book');
     card.setAttribute("data-index", myLibrary.indexOf(this));
     card.innerHTML =
         `<h2>${this.title}</h2>
             <h3>by ${this.author}</h3>
             <h3>${this.pageCount} pages</h3>
             <div class="options">
-                <div class="edit-but button ${this.read ? 'read' : 'unread'}">${this.read ? 'Read' : 'Not Read'}</div>
+                <div class="edit-but button ${(this.read === "read") ? 'read' : 'unread'}">${(this.read === "read") ? 'Read' : 'Not Read'}</div>
                 <div class="delete-but button"><i class="fas fa-trash"></i></div>
         </div>`;
     const deleteBut = card.querySelector(".delete-but");
@@ -25,7 +25,42 @@ Book.prototype.addCard = function () {
     booksList.insertBefore(card, booksList.lastElementChild);
 }
 
+
+function assignMyLibraryToStorage() {
+    let dayNightModeTemp = localStorage.getItem("day-night-mode");
+    localStorage.clear();
+    for (let i = 0; i < myLibrary.length; i++) {
+        const book = myLibrary[i];
+        for (property in book) {
+            localStorage.setItem(`book${myLibrary.indexOf(book)}.${property}`, book[property]);
+        }
+    }
+    localStorage.setItem("day-night-mode", dayNightModeTemp);
+}
+
 function initialize() {
+    if (localStorage.getItem("day-night-mode") === null) {
+        localStorage.setItem("day-night-mode", "day");
+    }
+    if (localStorage.getItem("day-night-mode") === "day") {
+        switchDayNightMode();
+        switchDayNightMode();
+    }
+    else if (localStorage.getItem("day-night-mode") === 'night') {
+        switchDayNightMode();
+    }
+
+    for (let i = 0; localStorage.getItem(`book${i}.title`) !== null; i++) {
+        book = new Book(
+            localStorage.getItem(`book${i}.title`),
+            localStorage.getItem(`book${i}.author`),
+            localStorage.getItem(`book${i}.pageCount`),
+            localStorage.getItem(`book${i}.read`)
+        );
+        myLibrary.push(book);
+    }
+
+
     booksList.innerHTML =
         `<div class="book add-book button">
             <strong> <i class="fas fa-plus"></i></strong>
@@ -33,9 +68,6 @@ function initialize() {
     myLibrary.forEach((book) => {
         book.addCard();
     });
-
-    switchDayNightMode();
-    switchDayNightMode();
 }
 
 function addBook() {
@@ -45,14 +77,18 @@ function addBook() {
     let read = addBookFormElement.querySelector("#add-book-read-status-field").value;
     const newBook = new Book(title, author, pageCount, read);
     myLibrary.push(newBook);
+    for (property in newBook) { //Save newBook to local Storage
+        localStorage.setItem(`book${myLibrary.length - 1}.${property}`, newBook[property]);
+    }
     newBook.addCard();
     toggleAddBookForm();
 }
 
 function toggleReadStatus() {
     const bookCard = findAncestorByClass(this, "book");
-    if (myLibrary[bookCard.getAttribute("data-index")].read === true) {
-        myLibrary[bookCard.getAttribute("data-index")].read = false;
+    if (myLibrary[bookCard.getAttribute("data-index")].read === "read") {
+        myLibrary[bookCard.getAttribute("data-index")].read = "unread";
+        localStorage.setItem(`book${bookCard.getAttribute("data-index")}.read`, "unread");
         bookCard.classList.remove("read-book");
         bookCard.classList.add("unread-book");
         this.classList.remove("read");
@@ -60,7 +96,8 @@ function toggleReadStatus() {
         this.textContent = "Not Read";
     }
     else {
-        myLibrary[bookCard.getAttribute("data-index")].read = true;
+        myLibrary[bookCard.getAttribute("data-index")].read = "read";
+        localStorage.setItem(`book${bookCard.getAttribute("data-index")}.read`, "read");
         bookCard.classList.add("read-book");
         bookCard.classList.remove("unread-book");
         this.classList.add("read");
@@ -84,8 +121,10 @@ function toggleAddBookForm() {
 
 function deleteBook() {
     const bookCard = findAncestorByClass(this, "book");
+    const book = myLibrary[bookCard.getAttribute("data-index")];
     myLibrary.splice(bookCard.getAttribute("data-index"), 1);
     bookCard.remove();
+    assignMyLibraryToStorage();
 }
 
 function switchDayNightMode() {
@@ -94,13 +133,15 @@ function switchDayNightMode() {
         for (key in nightModePalatte) {
             document.documentElement.style.setProperty(key, nightModePalatte[key]);
             dayNightModeSwitch.setAttribute("data-mode", "night");
-        }  
+        }
+        localStorage.setItem("day-night-mode", "night");
     }
     else if (dayNightModeSwitch.getAttribute("data-mode") === "night") {
         for (key in dayModePalatte) {
             document.documentElement.style.setProperty(key, dayModePalatte[key]);
             dayNightModeSwitch.setAttribute("data-mode", "day");
         }
+        localStorage.setItem("day-night-mode", "day");
     }
 
     dayNightModeSwitch.querySelector("[data-value='day']").classList.toggle("display-none");
@@ -143,13 +184,14 @@ const dayNightModeSwitch = document.querySelector(".day-night-mode-switch");
 dayNightModeSwitch.addEventListener("click", switchDayNightMode);
 
 
-const myLibrary = [
-    new Book("Pride and Prejudice", "Jane Austen", 500, true),
-    new Book("The Great Gatsby", "F. Scott Fitzgerald", 200, false),
-    new Book("Wuthering Heights", "Charlotte Bronte", 350, false),
-    new Book("The Killing of a Mockingbird", "Neil Harper Lee", 350, true),
-    new Book("Emma", "Jane Austen", 600, false),
-];
+// const myLibrary = [
+//     new Book("Pride and Prejudice", "Jane Austen", 500, true),
+//     new Book("The Great Gatsby", "F. Scott Fitzgerald", 200, false),
+//     new Book("Wuthering Heights", "Charlotte Bronte", 350, false),
+//     new Book("The Killing of a Mockingbird", "Neil Harper Lee", 350, true),
+//     new Book("Emma", "Jane Austen", 600, false),
+// ];
+const myLibrary = [];
 const booksList = document.querySelector("div.books-list");
 
 initialize();

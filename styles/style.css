@@ -190,6 +190,10 @@ header {
     background-color: inherit;
     color: inherit;
 }
+.popup-form form select option {
+    background-color: var(--popup-form-bg);
+    color: inherit;
+}
 .popup-form  form  input[type='text'],
 .popup-form  form  input[type='number'] {
     border: none;
