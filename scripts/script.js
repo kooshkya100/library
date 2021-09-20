@@ -184,13 +184,7 @@ const dayNightModeSwitch = document.querySelector(".day-night-mode-switch");
 dayNightModeSwitch.addEventListener("click", switchDayNightMode);
 
 
-// const myLibrary = [
-//     new Book("Pride and Prejudice", "Jane Austen", 500, true),
-//     new Book("The Great Gatsby", "F. Scott Fitzgerald", 200, false),
-//     new Book("Wuthering Heights", "Charlotte Bronte", 350, false),
-//     new Book("The Killing of a Mockingbird", "Neil Harper Lee", 350, true),
-//     new Book("Emma", "Jane Austen", 600, false),
-// ];
+
 const myLibrary = [];
 const booksList = document.querySelector("div.books-list");
 
@@ -222,4 +216,30 @@ function findAncestorByClass(node, className) {
     else {
         return findAncestorByClass(node.parentElement, className);
     }
+}
+
+const tempBooks = [
+    new Book("Pride and Prejudice", "Jane Austen", 500, "read"),
+    new Book("The Great Gatsby", "F. Scott Fitzgerald", 200, "unread"),
+    new Book("Wuthering Heights", "Charlotte Bronte", 350, "unread"),
+    new Book("The Killing of a Mockingbird", "Neil Harper Lee", 350, "read"),
+    new Book("Emma", "Jane Austen", 600, "unread"),
+    new Book("David Copperfield", "Charles Dickens", 800, "unread"),
+    new Book("The Catcher in The Rye", "J.D. Salinger", 800, "unread"),
+    new Book("The Fault in Our Stars", "John Green", 100, "read"),
+];
+function addTempBooks() {
+    localStorage.clear();
+    for (let i = 0; i < tempBooks.length; i++) {
+        const book = tempBooks[i];
+        for (property in book) {
+            localStorage.setItem(`book${tempBooks.indexOf(book)}.${property}`, book[property]);
+        }
+    }
+    localStorage.setItem("day-night-mode", "night");
+    initialize();
+}
+function clear() {
+    localStorage.clear();
+    initialize();
 }
